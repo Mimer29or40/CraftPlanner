@@ -1,6 +1,7 @@
 package mimer29or40.craftPlanner.common;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mezz.jei.Internal;
 import mezz.jei.api.recipe.IRecipeCategory;
@@ -22,9 +23,11 @@ public class Recipe
     private final List<InputFluid>  inputFluids  = new ArrayList<>();
     private final List<OutputFluid> outputFluids = new ArrayList<>();
 
+    public Recipe() {}
+
     public Recipe(IRecipeWrapper recipe, IRecipeCategory category)
     {
-        this.category = category.getTitle();
+        this.category = category.getUid();
 
         Object mainOutput = recipe.getOutputs().get(0);
         if (mainOutput instanceof ItemStack)
@@ -103,56 +106,63 @@ public class Recipe
         recipe.addProperty("id", this.id);
 
         JsonArray inputs = new JsonArray();
-        for (InputItem inputItem : inputItems)
-        {
-            JsonObject input = new JsonObject();
-            input.addProperty("name", inputItem.name);
-            input.addProperty("id", inputItem.id);
-            input.addProperty("slot", inputItem.slot);
-            input.addProperty("amount", inputItem.amount);
-            inputs.add(input);
-        }
+        for (InputItem inputItem : this.inputItems)
+        { inputs.add(inputItem.toJson()); }
         recipe.add("inputs", inputs);
 
         JsonArray outputs = new JsonArray();
-        for (OutputItem outputItem : outputItems)
-        {
-            JsonObject output = new JsonObject();
-            output.addProperty("name", outputItem.name);
-            output.addProperty("id", outputItem.id);
-            output.addProperty("slot", outputItem.slot);
-            output.addProperty("amount", outputItem.amount);
-            output.addProperty("probability", outputItem.probability);
-            outputs.add(output);
-        }
+        for (OutputItem outputItem : this.outputItems)
+        { outputs.add(outputItem.toJson()); }
         recipe.add("outputs", outputs);
 
         JsonArray fluidInputs = new JsonArray();
-        for (InputFluid inputFluid : inputFluids)
-        {
-            JsonObject input = new JsonObject();
-            input.addProperty("name", inputFluid.name);
-            input.addProperty("id", inputFluid.id);
-            input.addProperty("slot", inputFluid.slot);
-            input.addProperty("amount", inputFluid.amount);
-            fluidInputs.add(input);
-        }
+        for (InputFluid inputFluid : this.inputFluids)
+        { fluidInputs.add(inputFluid.toJson()); }
         recipe.add("fluidInputs", fluidInputs);
 
         JsonArray fluidOutputs = new JsonArray();
-        for (OutputFluid outputFluid : outputFluids)
-        {
-            JsonObject output = new JsonObject();
-            output.addProperty("name", outputFluid.name);
-            output.addProperty("id", outputFluid.id);
-            output.addProperty("slot", outputFluid.slot);
-            output.addProperty("amount", outputFluid.amount);
-            output.addProperty("probability", outputFluid.probability);
-            fluidOutputs.add(output);
-        }
+        for (OutputFluid outputFluid : this.outputFluids)
+        { fluidOutputs.add(outputFluid.toJson()); }
         recipe.add("fluidOutputs", fluidOutputs);
 
         return recipe;
+    }
+
+    public Recipe fromJson(JsonObject recipeObject)
+    {
+        this.name = recipeObject.get("name").getAsString();
+        this.category = recipeObject.get("category").getAsString();
+        this.id = recipeObject.get("id").getAsString();
+
+        JsonArray inputs = recipeObject.getAsJsonArray("inputs");
+        if (!inputs.isJsonNull())
+        {
+            for (JsonElement inputItem : inputs)
+            { this.inputItems.add(new InputItem().fromJson(inputItem.getAsJsonObject())); }
+        }
+
+        JsonArray outputs = recipeObject.getAsJsonArray("outputs");
+        if (!outputs.isJsonNull())
+        {
+            for (JsonElement outputItem : outputs)
+            { this.outputItems.add(new OutputItem().fromJson(outputItem.getAsJsonObject())); }
+        }
+
+        JsonArray fluidInputs = recipeObject.getAsJsonArray("fluidInputs");
+        if (!fluidInputs.isJsonNull())
+        {
+            for (JsonElement fluidInput : fluidInputs)
+            { this.inputFluids.add(new InputFluid().fromJson(fluidInput.getAsJsonObject())); }
+        }
+
+        JsonArray fluidOutputs = recipeObject.getAsJsonArray("fluidOutputs");
+        if (!fluidOutputs.isJsonNull())
+        {
+            for (JsonElement fluidOutput : fluidOutputs)
+            { this.outputFluids.add(new OutputFluid().fromJson(fluidOutput.getAsJsonObject())); }
+        }
+
+        return this;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package mimer29or40.craftPlanner.mod;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import mezz.jei.Internal;
 import mezz.jei.RecipeRegistry;
@@ -8,12 +10,12 @@ import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mimer29or40.craftPlanner.common.Recipe;
-import mimer29or40.craftPlanner.common.util.JsonHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 
+import java.io.FileWriter;
 import java.util.*;
 
 public class CommandRecipeDump extends CommandBase
@@ -182,7 +184,12 @@ public class CommandRecipeDump extends CommandBase
         String message = "";
         try
         {
-            JsonHelper.writeToFile("Recipes", recipeArray);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+            FileWriter file = new FileWriter(CraftPlanner.recipeFile);
+            file.write(gson.toJson(recipeArray));
+            file.flush();
+            file.close();
             message = "Recipes exported successfully";
         }
         catch (Exception e)

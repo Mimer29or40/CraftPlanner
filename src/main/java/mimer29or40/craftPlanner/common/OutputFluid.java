@@ -1,5 +1,6 @@
 package mimer29or40.craftPlanner.common;
 
+import com.google.gson.JsonObject;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -11,6 +12,8 @@ public class OutputFluid
     public int    amount;
     public float  probability;
 
+    public OutputFluid() {}
+
     public OutputFluid(FluidStack fluidStack, int slot, int amount, float probability)
     {
         this.name = fluidStack.getLocalizedName();
@@ -18,6 +21,30 @@ public class OutputFluid
         this.slot = slot;
         this.amount = amount;
         this.probability = probability;
+    }
+
+    public JsonObject toJson()
+    {
+        JsonObject outputFluid = new JsonObject();
+
+        outputFluid.addProperty("name", this.name);
+        outputFluid.addProperty("id", this.id);
+        outputFluid.addProperty("slot", this.slot);
+        outputFluid.addProperty("amount", this.amount);
+        outputFluid.addProperty("probability", this.probability);
+
+        return outputFluid;
+    }
+
+    public OutputFluid fromJson(JsonObject outputFluidObject)
+    {
+        this.name = outputFluidObject.get("name").getAsString();
+        this.id = outputFluidObject.get("id").getAsString();
+        this.slot = outputFluidObject.get("slot").getAsInt();
+        this.amount = outputFluidObject.get("amount").getAsInt();
+        this.probability = outputFluidObject.get("probability").getAsFloat();
+
+        return this;
     }
 
     @Override
