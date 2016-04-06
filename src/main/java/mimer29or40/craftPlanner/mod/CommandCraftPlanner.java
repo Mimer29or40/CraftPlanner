@@ -9,16 +9,18 @@ import mezz.jei.RecipeRegistry;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import mimer29or40.craftPlanner.application.ApplicationCraftPlanner;
 import mimer29or40.craftPlanner.common.Recipe;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 
 import java.io.FileWriter;
 import java.util.*;
 
-public class CommandRecipeDump extends CommandBase
+public class CommandCraftPlanner extends CommandBase
 {
     private static final List<String>        subCommands            = new ArrayList<>();
     private static final Map<String, String> subCommandUsage        = new HashMap<>();
@@ -30,16 +32,19 @@ public class CommandRecipeDump extends CommandBase
     static
     {
         subCommands.add("help");
-        subCommands.add("listCategories");
-        subCommands.add("exportRecipes");
+        subCommands.add("list");
+        subCommands.add("export");
+        subCommands.add("start");
 
         subCommandUsage.put("help", " [Command] Alias: (h)");
-        subCommandUsage.put("listCategories", " Alias: (l)");
-        subCommandUsage.put("exportRecipes", " Alias: (e)");
+        subCommandUsage.put("list", " Alias: (l)");
+        subCommandUsage.put("export", " Alias: (e)");
+        subCommandUsage.put("start", " Alias: (s)");
 
         subCommandDescriptions.put("help", "");
-        subCommandDescriptions.put("listCategories", " Lists the Recipe Categories");
-        subCommandDescriptions.put("exportRecipes", " Exports all recipes to Recipes.json in the base folder");
+        subCommandDescriptions.put("list", " Lists the Recipe Categories");
+        subCommandDescriptions.put("export", " Exports all recipes to Recipes.json in the base folder");
+        subCommandDescriptions.put("start", " Starts the Craft Planner Application");
 
         categoryBlacklist.add("Fuel");
     }
@@ -47,19 +52,19 @@ public class CommandRecipeDump extends CommandBase
     @Override
     public String getCommandName()
     {
-        return "recipe-dump";
+        return "craft-planner";
     }
 
     @Override
     public List<String> getCommandAliases()
     {
-        return Collections.singletonList("rd");
+        return Collections.singletonList("cp");
     }
 
     @Override
     public String getCommandUsage(ICommandSender iCommandSender)
     {
-        return "/recipe-dump help";
+        return "/craft-planner help";
     }
 
     @Override
@@ -68,20 +73,20 @@ public class CommandRecipeDump extends CommandBase
         return 0;
     }
 
-//    @Override
-//    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
-//    {
-//        return args.length == 1 ? getListOfStringsMatchingLastWord(args, subCommands) :
-//               args.length == 2 && (args[0].equals("help") || args[0].equals("h")) ? getListOfStringsMatchingLastWord(args, subCommands) :
-//               Collections.emptyList();
-//    }
+    @Override
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
+    {
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, subCommands) :
+               args.length == 2 && (args[0].equals("help") || args[0].equals("h")) ? getListOfStringsMatchingLastWord(args, subCommands) :
+               new ArrayList<String>();
+    }
 
     @Override
     public void processCommand(ICommandSender iCommandSender, String[] args) throws CommandException
     {
         if (args.length < 1)
         {
-            iCommandSender.addChatMessage(new ChatComponentText("/recipe-dump help"));
+            iCommandSender.addChatMessage(new ChatComponentText(getCommandUsage(iCommandSender)));
             return;
         }
 
@@ -94,20 +99,23 @@ public class CommandRecipeDump extends CommandBase
             case "h":
                 help(iCommandSender, args);
                 break;
-            case "listCategories":
+            case "list":
                 listCategories(iCommandSender);
                 break;
             case "l":
                 listCategories(iCommandSender);
                 break;
-            case "exportRecipes":
+            case "export":
                 exportRecipes(iCommandSender);
                 break;
             case "e":
                 exportRecipes(iCommandSender);
                 break;
+            case "start":
+                ApplicationCraftPlanner.startApplication(true);
+                break;
             default:
-                iCommandSender.addChatMessage(new ChatComponentText("Command not recognized\n/recipe-dump help"));
+                iCommandSender.addChatMessage(new ChatComponentText("Command not recognized\n" + getCommandUsage(iCommandSender)));
         }
     }
 
@@ -130,7 +138,7 @@ public class CommandRecipeDump extends CommandBase
 
     private void help(ICommandSender iCommandSender, String[] args)
     {
-        String message = "";
+        String message;
         if (args.length < 2)
         {
             message = "Available Commands:\n";
@@ -174,14 +182,13 @@ public class CommandRecipeDump extends CommandBase
                 IRecipeWrapper recipeWrapper = recipeHandler.getRecipeWrapper(recipeData);
 
                 Recipe recipe = new Recipe(recipeWrapper, category);
-//                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//                System.out.println(gson.toJson(recipe));
 
                 recipeArray.add(recipe.toJson());
+                iCommandSender.addChatMessage(new ChatComponentText(recipe.getCategory() + " recipe for " + recipe.getName() + " found"));
             }
         }
 
-        String message = "";
+        String message;
         try
         {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();

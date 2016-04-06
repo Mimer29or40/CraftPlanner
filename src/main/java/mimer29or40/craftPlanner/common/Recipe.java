@@ -3,10 +3,9 @@ package mimer29or40.craftPlanner.common;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import mezz.jei.Internal;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import mezz.jei.util.StackHelper;
+import mimer29or40.craftPlanner.mod.JeiHelper;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -14,9 +13,10 @@ import java.util.List;
 
 public class Recipe
 {
-    private String                 name;
-    private String                 id;
-    private String                 category;
+    private String name;
+    private String id;
+    private String category;
+    private String displayCategory;
 
     private final List<InputItem>   inputItems   = new ArrayList<>();
     private final List<OutputItem>  outputItems  = new ArrayList<>();
@@ -28,12 +28,13 @@ public class Recipe
     public Recipe(IRecipeWrapper recipe, IRecipeCategory category)
     {
         this.category = category.getUid();
+        this.displayCategory = category.getTitle();
 
         Object mainOutput = recipe.getOutputs().get(0);
         if (mainOutput instanceof ItemStack)
         {
             this.name = ((ItemStack) mainOutput).getDisplayName();
-            this.id = Internal.getStackHelper().getUniqueIdentifierForStack((ItemStack) mainOutput, StackHelper.UidMode.NORMAL);
+            this.id = JeiHelper.getUniqueName((ItemStack) mainOutput);
         }
         else
             this.name = this.id = mainOutput.toString();
@@ -75,6 +76,11 @@ public class Recipe
     public String getCategory()
     {
         return this.category;
+    }
+
+    public String getDisplayCategory()
+    {
+        return this.displayCategory;
     }
 
     private void setInputItem(ItemStack itemStack, int slot, int amount)
