@@ -1,4 +1,4 @@
-package mimer29or40.craftPlanner.common;
+package mimer29or40.craftPlanner.model;
 
 import com.google.gson.JsonObject;
 import net.minecraftforge.fluids.FluidRegistry;

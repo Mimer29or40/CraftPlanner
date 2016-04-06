@@ -1,4 +1,4 @@
-package mimer29or40.craftPlanner.mod;
+package mimer29or40.craftPlanner;
 
 import mezz.jei.Internal;
 import mezz.jei.RecipeRegistry;

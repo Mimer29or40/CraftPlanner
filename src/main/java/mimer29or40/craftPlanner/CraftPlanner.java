@@ -1,7 +1,7 @@
-package mimer29or40.craftPlanner.mod;
+package mimer29or40.craftPlanner;
 
-import mimer29or40.craftPlanner.common.util.Log;
-import mimer29or40.craftPlanner.mod.gui.GuiHandler;
+import mimer29or40.craftPlanner.gui.GuiHandler;
+import mimer29or40.craftPlanner.util.Log;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -29,8 +29,8 @@ public class CraftPlanner
 
     public static final String DEPENDENCIES = "required-after:JEI@[2.28,)";
 
-    public static final String CLIENT_PROXY = "mimer29or40.craftPlanner.mod.ProxyClient";
-    public static final String COMMON_PROXY = "mimer29or40.craftPlanner.mod.ProxyCommon";
+    public static final String CLIENT_PROXY = "mimer29or40.craftPlanner.ProxyClient";
+    public static final String COMMON_PROXY = "mimer29or40.craftPlanner.ProxyCommon";
 
     public static File configDir;
     public static File recipeFile;

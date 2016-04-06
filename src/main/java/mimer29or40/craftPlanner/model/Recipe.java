@@ -1,11 +1,11 @@
-package mimer29or40.craftPlanner.common;
+package mimer29or40.craftPlanner.model;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import mimer29or40.craftPlanner.mod.JeiHelper;
+import mimer29or40.craftPlanner.JeiHelper;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;

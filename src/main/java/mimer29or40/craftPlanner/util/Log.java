@@ -1,7 +1,6 @@
-package mimer29or40.craftPlanner.common.util;
+package mimer29or40.craftPlanner.util;
 
-import mimer29or40.craftPlanner.application.ApplicationCraftPlanner;
-import mimer29or40.craftPlanner.mod.CraftPlanner;
+import mimer29or40.craftPlanner.CraftPlanner;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
@@ -9,10 +8,7 @@ public class Log
 {
     private static void log(Level logLevel, String format, Object... object)
     {
-        if (ApplicationCraftPlanner.runFromMinecraft)
-        { FMLLog.log(CraftPlanner.MOD_NAME, logLevel, String.format(format, object)); }
-        else
-        { System.out.println(String.format("[%s] ", logLevel.toString().toUpperCase()) + String.format(format, object)); }
+        FMLLog.log(CraftPlanner.MOD_NAME, logLevel, String.format(format, object));
     }
 
     public static void off(String format, Object... object)

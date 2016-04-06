@@ -1,4 +1,4 @@
-package mimer29or40.craftPlanner.mod.gui;
+package mimer29or40.craftPlanner.gui;
 
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;

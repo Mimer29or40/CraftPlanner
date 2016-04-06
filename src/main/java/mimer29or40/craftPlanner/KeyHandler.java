@@ -1,6 +1,6 @@
-package mimer29or40.craftPlanner.mod;
+package mimer29or40.craftPlanner;
 
-import mimer29or40.craftPlanner.mod.gui.GuiExportScreen;
+import mimer29or40.craftPlanner.gui.GuiExportScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;

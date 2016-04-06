@@ -1,4 +1,4 @@
-package mimer29or40.craftPlanner.mod.gui;
+package mimer29or40.craftPlanner.gui;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
@@ -7,9 +7,9 @@ import com.google.gson.JsonArray;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import mimer29or40.craftPlanner.common.Recipe;
-import mimer29or40.craftPlanner.mod.CraftPlanner;
-import mimer29or40.craftPlanner.mod.JeiHelper;
+import mimer29or40.craftPlanner.CraftPlanner;
+import mimer29or40.craftPlanner.JeiHelper;
+import mimer29or40.craftPlanner.model.Recipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -51,7 +51,6 @@ public class GuiExportScreen extends GuiScreen
         buttonList.add(new GuiButton(0, border, border, dividingLine - border, 20, "Export Item Images"));
         buttonList.add(new GuiButton(1, border, 25 + border, dividingLine - border, 20, "List Available Categories"));
         buttonList.add(new GuiButton(2, border, 50 + border, dividingLine - border, 20, "Export Recipes"));
-        buttonList.add(new GuiButton(3, border, 75 + border, dividingLine - border, 20, "Launch Crafting Planner"));
     }
 
     @Override
@@ -68,8 +67,6 @@ public class GuiExportScreen extends GuiScreen
             case 2:
                 exportRecipes();
                 break;
-            case 3:
-
         }
     }
 

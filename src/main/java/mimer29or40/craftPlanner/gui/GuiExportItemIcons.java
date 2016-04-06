@@ -1,9 +1,9 @@
-package mimer29or40.craftPlanner.mod.gui;
+package mimer29or40.craftPlanner.gui;
 
 import com.google.common.collect.ImmutableList;
 import mezz.jei.Internal;
-import mimer29or40.craftPlanner.mod.CraftPlanner;
-import mimer29or40.craftPlanner.mod.JeiHelper;
+import mimer29or40.craftPlanner.CraftPlanner;
+import mimer29or40.craftPlanner.JeiHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;

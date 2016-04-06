@@ -1,4 +1,4 @@
-package mimer29or40.craftPlanner.mod;
+package mimer29or40.craftPlanner;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
@@ -9,8 +9,7 @@ import mezz.jei.RecipeRegistry;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import mimer29or40.craftPlanner.application.ApplicationCraftPlanner;
-import mimer29or40.craftPlanner.common.Recipe;
+import mimer29or40.craftPlanner.model.Recipe;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -112,7 +111,7 @@ public class CommandCraftPlanner extends CommandBase
                 exportRecipes(iCommandSender);
                 break;
             case "start":
-                ApplicationCraftPlanner.startApplication(true);
+//                ApplicationCraftPlanner.startApplication(true);
                 break;
             default:
                 iCommandSender.addChatMessage(new ChatComponentText("Command not recognized\n" + getCommandUsage(iCommandSender)));
