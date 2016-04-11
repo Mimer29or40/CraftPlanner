@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class OutputFluid
+public class RecipeFluid
 {
     public String name;
     public String id;
@@ -12,9 +12,14 @@ public class OutputFluid
     public int    amount;
     public float  probability;
 
-    public OutputFluid() {}
+    public RecipeFluid() {}
 
-    public OutputFluid(FluidStack fluidStack, int slot, int amount, float probability)
+    public RecipeFluid(FluidStack fluidStack, int slot, int amount)
+    {
+        this(fluidStack, slot, amount, 1.0f);
+    }
+
+    public RecipeFluid(FluidStack fluidStack, int slot, int amount, float probability)
     {
         this.name = fluidStack.getLocalizedName();
         this.id = FluidRegistry.getFluidName(fluidStack);
@@ -36,7 +41,7 @@ public class OutputFluid
         return outputFluid;
     }
 
-    public OutputFluid fromJson(JsonObject outputFluidObject)
+    public RecipeFluid fromJson(JsonObject outputFluidObject)
     {
         this.name = outputFluidObject.get("name").getAsString();
         this.id = outputFluidObject.get("id").getAsString();
@@ -50,7 +55,7 @@ public class OutputFluid
     @Override
     public String toString()
     {
-        return String.format("InputItem:[name: %s,id: %s,slot: %s,amount: %s, probability: %s]",
+        return String.format("Fluid [name: %s,id: %s,slot: %s,amount: %s, probability: %s]",
                              this.name, this.id, this.slot, this.amount, this.probability);
     }
 }

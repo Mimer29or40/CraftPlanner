@@ -9,10 +9,12 @@ import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mimer29or40.craftPlanner.CraftPlanner;
 import mimer29or40.craftPlanner.JeiHelper;
+import mimer29or40.craftPlanner.model.ItemWrapper;
 import mimer29or40.craftPlanner.model.Recipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -50,7 +52,8 @@ public class GuiExportScreen extends GuiScreen
 
         buttonList.add(new GuiButton(0, border, border, dividingLine - border, 20, "Export Item Images"));
         buttonList.add(new GuiButton(1, border, 25 + border, dividingLine - border, 20, "List Available Categories"));
-        buttonList.add(new GuiButton(2, border, 50 + border, dividingLine - border, 20, "Export Recipes"));
+        buttonList.add(new GuiButton(2, border, 50 + border, dividingLine - border, 20, "Export Items"));
+        buttonList.add(new GuiButton(3, border, 75 + border, dividingLine - border, 20, "Export Recipes"));
     }
 
     @Override
@@ -65,6 +68,9 @@ public class GuiExportScreen extends GuiScreen
                 listCategories();
                 break;
             case 2:
+                exportItems();
+                break;
+            case 3:
                 exportRecipes();
                 break;
         }
@@ -165,6 +171,40 @@ public class GuiExportScreen extends GuiScreen
         {
             debugWindowLog.add(category);
         }
+    }
+
+    private void exportItems()
+    {
+        JsonArray itemArray = new JsonArray();
+
+        ImmutableList<ItemStack> itemStacks = JeiHelper.itemRegistry.getItemList();
+
+        for (ItemStack itemStack : itemStacks)
+        {
+            ItemWrapper item = new ItemWrapper(itemStack);
+
+            itemArray.add(item.toJson());
+
+            debugWindowLog.add(item.getName() + " item created");
+        }
+
+        String message;
+        try
+        {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+            FileWriter file = new FileWriter(CraftPlanner.itemFile);
+            file.write(gson.toJson(itemArray));
+            file.flush();
+            file.close();
+            message = "Items exported successfully";
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            message = "An error occurred writing items";
+        }
+        debugWindowLog.add(message);
     }
 
     private void exportRecipes()

@@ -5,7 +5,7 @@ import mezz.jei.Internal;
 import mezz.jei.util.StackHelper;
 import net.minecraft.item.ItemStack;
 
-public class OutputItem
+public class RecipeItem
 {
     public String name;
     public String id;
@@ -13,9 +13,14 @@ public class OutputItem
     public int    amount;
     public float  probability;
 
-    public OutputItem() {}
+    public RecipeItem() {}
 
-    public OutputItem(ItemStack itemStack, int slot, int amount, float probability)
+    public RecipeItem(ItemStack itemStack, int slot, int amount)
+    {
+        this(itemStack, slot, amount, 1.0f);
+    }
+
+    public RecipeItem(ItemStack itemStack, int slot, int amount, float probability)
     {
         this.name = itemStack.getDisplayName();
         this.id = Internal.getStackHelper().getUniqueIdentifierForStack(itemStack, StackHelper.UidMode.NORMAL);
@@ -37,7 +42,7 @@ public class OutputItem
         return outputItem;
     }
 
-    public OutputItem fromJson(JsonObject outputItemObject)
+    public RecipeItem fromJson(JsonObject outputItemObject)
     {
         this.name = outputItemObject.get("name").getAsString();
         this.id = outputItemObject.get("id").getAsString();
@@ -51,7 +56,7 @@ public class OutputItem
     @Override
     public String toString()
     {
-        return String.format("InputItem:[name: %s,id: %s,slot: %s,amount: %s, probability: %s]",
+        return String.format("Item [name: %s,id: %s,slot: %s,amount: %s, probability: %s]",
                              this.name, this.id, this.slot, this.amount, this.probability);
     }
 }

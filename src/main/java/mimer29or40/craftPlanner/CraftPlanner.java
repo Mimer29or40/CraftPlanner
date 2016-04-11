@@ -34,6 +34,7 @@ public class CraftPlanner
 
     public static File configDir;
     public static File recipeFile;
+    public static File itemFile;
 
     @Mod.Instance(MOD_ID)
     public static CraftPlanner instance;
@@ -47,15 +48,17 @@ public class CraftPlanner
         event.getModMetadata().version = VERSION;
         configDir = new File(event.getModConfigurationDirectory(), "CraftingPlanner");
         recipeFile = new File(configDir, "Recipes.json");
+        itemFile = new File(configDir, "Items.json");
 
         if (!configDir.exists() && !configDir.mkdir()) Log.error("Could not create config directory");
         try
         {
             Files.createFile(recipeFile.toPath());
+            Files.createFile(itemFile.toPath());
         }
         catch (IOException e)
         {
-            Log.error("An error occurred when creating Recipes.json [%s]", e.getMessage());
+            Log.error("An error occurred when creating files [%s]", e.getMessage());
         }
 
         proxy.preInit(event);

@@ -1,7 +1,6 @@
 package mimer29or40.craftPlanner.gui;
 
 import com.google.common.collect.ImmutableList;
-import mezz.jei.Internal;
 import mimer29or40.craftPlanner.CraftPlanner;
 import mimer29or40.craftPlanner.JeiHelper;
 import net.minecraft.client.Minecraft;
@@ -66,7 +65,7 @@ public class GuiExportItemIcons extends GuiScreen
         borderSize = iconSize / 16;
         boxSize = iconSize + borderSize * 2;
 
-        itemStacks = Internal.getItemRegistry().getItemList();
+        itemStacks = JeiHelper.itemRegistry.getItemList();
     }
 
     private void returnScreen()

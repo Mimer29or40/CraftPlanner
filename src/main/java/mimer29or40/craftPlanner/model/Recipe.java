@@ -18,10 +18,10 @@ public class Recipe
     private String category;
     private String displayCategory;
 
-    private final List<InputItem>   inputItems   = new ArrayList<>();
-    private final List<OutputItem>  outputItems  = new ArrayList<>();
-    private final List<InputFluid>  inputFluids  = new ArrayList<>();
-    private final List<OutputFluid> outputFluids = new ArrayList<>();
+    private final List<RecipeItem>  inputItems   = new ArrayList<>();
+    private final List<RecipeItem>  outputItems  = new ArrayList<>();
+    private final List<RecipeFluid> inputFluids  = new ArrayList<>();
+    private final List<RecipeFluid> outputFluids = new ArrayList<>();
 
     public Recipe() {}
 
@@ -87,7 +87,7 @@ public class Recipe
     {
         if (itemStack != null)
         {
-            InputItem inputItem = new InputItem(itemStack, slot, amount);
+            RecipeItem inputItem = new RecipeItem(itemStack, slot, amount);
             if (!inputItems.contains(inputItem))
                 inputItems.add(inputItem);
         }
@@ -97,7 +97,7 @@ public class Recipe
     {
         if (itemStack != null)
         {
-            OutputItem outputItem = new OutputItem(itemStack, slot, amount, probability);
+            RecipeItem outputItem = new RecipeItem(itemStack, slot, amount, probability);
             if (!outputItems.contains(outputItem))
                 outputItems.add(outputItem);
         }
@@ -112,22 +112,22 @@ public class Recipe
         recipe.addProperty("id", this.id);
 
         JsonArray inputs = new JsonArray();
-        for (InputItem inputItem : this.inputItems)
+        for (RecipeItem inputItem : this.inputItems)
         { inputs.add(inputItem.toJson()); }
         recipe.add("inputs", inputs);
 
         JsonArray outputs = new JsonArray();
-        for (OutputItem outputItem : this.outputItems)
+        for (RecipeItem outputItem : this.outputItems)
         { outputs.add(outputItem.toJson()); }
         recipe.add("outputs", outputs);
 
         JsonArray fluidInputs = new JsonArray();
-        for (InputFluid inputFluid : this.inputFluids)
+        for (RecipeFluid inputFluid : this.inputFluids)
         { fluidInputs.add(inputFluid.toJson()); }
         recipe.add("fluidInputs", fluidInputs);
 
         JsonArray fluidOutputs = new JsonArray();
-        for (OutputFluid outputFluid : this.outputFluids)
+        for (RecipeFluid outputFluid : this.outputFluids)
         { fluidOutputs.add(outputFluid.toJson()); }
         recipe.add("fluidOutputs", fluidOutputs);
 
@@ -144,28 +144,28 @@ public class Recipe
         if (!inputs.isJsonNull())
         {
             for (JsonElement inputItem : inputs)
-            { this.inputItems.add(new InputItem().fromJson(inputItem.getAsJsonObject())); }
+            { this.inputItems.add(new RecipeItem().fromJson(inputItem.getAsJsonObject())); }
         }
 
         JsonArray outputs = recipeObject.getAsJsonArray("outputs");
         if (!outputs.isJsonNull())
         {
             for (JsonElement outputItem : outputs)
-            { this.outputItems.add(new OutputItem().fromJson(outputItem.getAsJsonObject())); }
+            { this.outputItems.add(new RecipeItem().fromJson(outputItem.getAsJsonObject())); }
         }
 
         JsonArray fluidInputs = recipeObject.getAsJsonArray("fluidInputs");
         if (!fluidInputs.isJsonNull())
         {
             for (JsonElement fluidInput : fluidInputs)
-            { this.inputFluids.add(new InputFluid().fromJson(fluidInput.getAsJsonObject())); }
+            { this.inputFluids.add(new RecipeFluid().fromJson(fluidInput.getAsJsonObject())); }
         }
 
         JsonArray fluidOutputs = recipeObject.getAsJsonArray("fluidOutputs");
         if (!fluidOutputs.isJsonNull())
         {
             for (JsonElement fluidOutput : fluidOutputs)
-            { this.outputFluids.add(new OutputFluid().fromJson(fluidOutput.getAsJsonObject())); }
+            { this.outputFluids.add(new RecipeFluid().fromJson(fluidOutput.getAsJsonObject())); }
         }
 
         return this;
